@@ -14,15 +14,24 @@ for i in e:
     #print(i)
     wordlist.append(i.replace("\n", ""))
 def assist(wordlist):
+    word_checker = wordlist.copy()
     while not solved:
         user_correct = False
         while not user_correct:
             uin = input("word, colors: ").split(" ")
             if len(uin) == 2:
+
                 if len(uin[0]) == 5 and len(uin[1]) == 5:
-                    user_correct = True
+                    if uin[0] in word_checker:
+                        user_correct = True
         user_correct = False
         def shrink(list1, word, colors):
+            ys = []
+            pos3 = 0
+            for i in colors:
+                pos3 += 1
+                if i == 'y':
+                    ys.append(word[pos3-1])
             list22 = []
             regex = '^'
             pos = 0
@@ -35,7 +44,7 @@ def assist(wordlist):
                     regappend = ''
                     for x in colors:
                         pos2 += 1
-                        if x == 'b':
+                        if x == 'b' and word[pos2-1] not in ys:
                             regappend += word[pos2 - 1]
                     regex += regappend
 
@@ -44,7 +53,7 @@ def assist(wordlist):
 
 
 
-
+#TODO
                 if i == "y":
                     regex = regex + "[^" + word[pos]
                     pos2 = 0
@@ -59,7 +68,7 @@ def assist(wordlist):
 
                 pos += 1
             regex = regex + "$"
-            print(regex)
+            #print(regex)
             for i in list1:
                 x = re.findall(regex, i)
 
@@ -85,6 +94,8 @@ def assist(wordlist):
             indexes.reverse()
 
             list6 = []
+            #print("ys", ys)
+            #print(list2)
             for i in ys:
                 for x in list2:
                     if i in x and x not in list6:
@@ -102,6 +113,7 @@ def assist(wordlist):
         colors = uin[1]
         list2 = shrink(wordlist, word, colors)
         #print("list2", list2)
+        #print(len(list2))
         list3 = shrink2(list2, word, colors)
         #print("list3", list3)
         #print(len(list3))
@@ -170,8 +182,8 @@ def assist(wordlist):
                 value += letter_dict[x.upper()][1]
             list5.append((value, i))
         list5.sort(reverse=True)
-        print(list5)
-        print(len(list5))
+        #print(list5)
+        print("Total words remaining:",len(list5))
         wordlist = list4.copy()
         print(list5)
 
@@ -180,7 +192,6 @@ def assist(wordlist):
 
 
 
-        print("eol")
 
 
 assist(wordlist)
