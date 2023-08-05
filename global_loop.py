@@ -180,7 +180,8 @@ def assist(wordlist):
             count+=1
         nlist.sort(reverse=True)
         print(nlist[:5])
-
+        if len(nlist) ==1:
+            exit()
 
 
 

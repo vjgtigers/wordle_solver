@@ -82,7 +82,6 @@ def solver_against_self(wordlist, guess, colors):
             if i == 'y':
                 ys.append(word[pos3-1])
         list22 = []
-        print("ys", ys)
         regex = '^'
         pos = 0
         for i in colors:
@@ -94,7 +93,6 @@ def solver_against_self(wordlist, guess, colors):
                 regappend = ''
                 for x in colors:
                     pos2 += 1
-                    #print("check in ys", x, word[pos-1], ys)
                     if x == 'b' and word[pos2-1] not in ys:
                         regappend += word[pos2 - 1]
                 regex += regappend
@@ -119,6 +117,7 @@ def solver_against_self(wordlist, guess, colors):
 
             pos += 1
         regex = regex + "$"
+        #print(regex)
         for i in list1:
             x = re.findall(regex, i)
 
@@ -236,8 +235,6 @@ def solver_against_self(wordlist, guess, colors):
 
 
 
-solved = False
-
 wordlist = []
 f = open("C:\\Users\\vjgti\\Downloads\\words5Letters.txt", "r")
 e = f.readlines()
@@ -245,22 +242,31 @@ for i in e:
     #print(i)
     wordlist.append(i.replace("\n", ""))
 
-
-answer = "femme"
-guess = "alert"
-colors = ""
-vals2 = [wordlist, guess]
-count = 0
-while not solved:
-    count +=1
-    vals = checker(vals2[1], answer)
-    vals2 = solver_against_self(vals2[0], vals[0], vals[1])
-    #TODO need to look father at this code underneeth to see if it is benifical
-    if vals2[1] == answer:
+len_to_solve = []
+for u in wordlist:
+    print("answer", u)
+    answer = u
+    guess = "crane"
+    colors = ""
+    vals2 = [wordlist, guess]
+    count = 0
+    solved = False
+    while not solved:
+        count +=1
         vals = checker(vals2[1], answer)
-        solved = True
-        print("if equals answer",count+1)
-    #if len(vals2[0]) == 1:
-    #    solved = True
-    #    vals = checker(vals2[1], answer)
-    #    print("len is 1:", count+1)
+        vals2 = solver_against_self(vals2[0], vals[0], vals[1])
+        #TODO need to look father at this code underneeth to see if it is benifical
+        if vals2[1] == answer:
+            vals = checker(vals2[1], answer)
+            solved = True
+            print("if equals answer",count+1)
+            len_to_solve.append(count+1)
+            if count+1 ==13:
+                exit()
+        #if len(vals2[0]) == 1:
+        #    solved = True
+        #    vals = checker(vals2[1], answer)
+        #    print("len is 1:", count+1)
+
+print(sum(len_to_solve)/len(len_to_solve))
+print(max(len_to_solve))
