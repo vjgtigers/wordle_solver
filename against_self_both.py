@@ -235,43 +235,58 @@ def solver_against_self(wordlist, guess, colors):
 
 
 
-wordlist = []
+wordlist1 = []
 f = open("C:\\Users\\vjgti\\Downloads\\words5Letters.txt", "r")
 e = f.readlines()
 for i in e:
     #print(i)
-    wordlist.append(i.replace("\n", ""))
+    wordlist1.append(i.replace("\n", ""))
 
-len_to_solve = []
 import time
-start_time = time.time()
+wordlist2 = wordlist1.copy()
 
 
+for e in wordlist2:
+    wordlist = wordlist2.copy()
 
-for u in wordlist:
-    answer = u
-    guess = "pupal"
-    colors = ""
-    vals2 = [wordlist, guess]
-    count = 0
-    solved = False
-    while not solved:
-        count +=1
-        vals = checker(vals2[1], answer)
-        vals2 = solver_against_self(vals2[0], vals[0], vals[1])
-        #TODO need to look father at this code underneeth to see if it is benifical
-        if vals2[1] == answer:
+
+    start_time = time.time()
+    len_to_solve = []
+    for u in wordlist:
+        answer = u
+        guess = e
+        colors = ""
+        vals2 = [wordlist, guess]
+        count = 0
+        solved = False
+        while not solved:
+            count +=1
             vals = checker(vals2[1], answer)
-            solved = True
-            print("Guesses:",count+1, answer)
-            len_to_solve.append(count+1)
-            #if count+1 ==13:
-            #    exit()
-        #if len(vals2[0]) == 1:
-        #    solved = True
-        #    vals = checker(vals2[1], answer)
-        #    print("len is 1:", count+1)
-
-print(sum(len_to_solve)/len(len_to_solve))
-print(max(len_to_solve))
-print("--- %s seconds ---" % (time.time() - start_time))
+            vals2 = solver_against_self(vals2[0], vals[0], vals[1])
+            #TODO need to look father at this code underneeth to see if it is benifical
+            if vals2[1] == answer:
+                vals = checker(vals2[1], answer)
+                solved = True
+                #print("Guesses:",count+1, answer)
+                len_to_solve.append(count+1)
+                #if count+1 ==13:
+                #    exit()
+            #if len(vals2[0]) == 1:
+            #    solved = True
+            #    vals = checker(vals2[1], answer)
+            #    print("len is 1:", count+1)
+        #print(e)
+    print("-----------------------")
+    print("guess", guess)
+    print(sum(len_to_solve)/len(len_to_solve))
+    #print(max(len_to_solve))
+    len_to_solve.sort(reverse=True)
+    print(len_to_solve)
+    over = 0
+    for i in len_to_solve:
+        if i > 6:
+            over +=1
+    #print(over, len(len_to_solve))
+    print(over, len(len_to_solve))
+    print(abs(over-len(len_to_solve))/len(len_to_solve))
+    print("--- %s seconds ---" % (time.time() - start_time))
