@@ -255,7 +255,6 @@ import random
 
 def theading_test(wordlist2, test_words):
     now = datetime.now()
-    print(test_words)
     current_time = now.strftime("%H:%M:%S")
     time2 = str(current_time.replace(":", "-"))
     ran = str(random.randint(0, 100000000))
@@ -298,9 +297,9 @@ def theading_test(wordlist2, test_words):
         print("-----------------------")
         print("guess", guess)
         print(sum(len_to_solve)/len(len_to_solve))
-        #print(max(len_to_solve))
+        print(max(len_to_solve))
         len_to_solve.sort(reverse=True)
-        print(len_to_solve)
+        #print(len_to_solve)
         over = 0
         for i in len_to_solve:
             if i > 6:
@@ -309,7 +308,7 @@ def theading_test(wordlist2, test_words):
         print(over, len(len_to_solve))
         print(abs(over-len(len_to_solve))/len(len_to_solve))
         print("--- %s seconds ---" % (time.time() - start_time))
-        file.write(guess+ "    "+ str(over) +"    "+ str((time.time() - start_time))+ "    "+ str(abs(over-len(len_to_solve))/len(len_to_solve)) + "    " +sum(len_to_solve)/len(len_to_solve) +"\n")
+        file.write(guess+ "    "+ str(over) +"    "+ str((time.time() - start_time))+ "    "+ str(abs(over-len(len_to_solve))/len(len_to_solve)) + "    " +str(sum(len_to_solve)/len(len_to_solve)) +"\n")
         file.close()
     #TODO start the loop with a continue untill to the word might to skip all previous
     file.close()
@@ -344,7 +343,7 @@ def work_log(work_data):
     theading_test(wordlist2, work_data)
 
 def pool_handler():
-    p = Pool(12)
+    p = Pool(8)
     p.map(work_log, final)
 
 
