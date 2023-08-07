@@ -244,50 +244,109 @@ for i in e:
 
 import time
 wordlist2 = wordlist1.copy()
+from datetime import datetime
+
+now = datetime.now()
+
+current_time = now.strftime("%H:%M:%S")
+print(current_time.replace(":", "-"))
+import random
 
 
-for e in wordlist2:
-    wordlist = wordlist2.copy()
-
-
-    start_time = time.time()
-    len_to_solve = []
-    for u in wordlist:
-        answer = u
-        guess = e
-        colors = ""
-        vals2 = [wordlist, guess]
-        count = 0
-        solved = False
-        while not solved:
-            count +=1
-            vals = checker(vals2[1], answer)
-            vals2 = solver_against_self(vals2[0], vals[0], vals[1])
-            #TODO need to look father at this code underneeth to see if it is benifical
-            if vals2[1] == answer:
-                vals = checker(vals2[1], answer)
-                solved = True
-                #print("Guesses:",count+1, answer)
-                len_to_solve.append(count+1)
-                #if count+1 ==13:
-                #    exit()
-            #if len(vals2[0]) == 1:
-            #    solved = True
-            #    vals = checker(vals2[1], answer)
-            #    print("len is 1:", count+1)
+def theading_test(wordlist2, test_words):
+    now = datetime.now()
+    print(test_words)
+    current_time = now.strftime("%H:%M:%S")
+    time2 = str(current_time.replace(":", "-"))
+    ran = str(random.randint(0, 100000000))
+    file = open("./answers2/" + str(time2) + "--"+ran + '.txt', "w")
+    file.close()
+    print("starting")
+    for e in test_words:
+        file = open("./answers2/" + str(time2) + "--" + ran + '.txt', "a")
+        print(e)
         #print(e)
-    print("-----------------------")
-    print("guess", guess)
-    print(sum(len_to_solve)/len(len_to_solve))
-    #print(max(len_to_solve))
-    len_to_solve.sort(reverse=True)
-    print(len_to_solve)
-    over = 0
-    for i in len_to_solve:
-        if i > 6:
-            over +=1
-    #print(over, len(len_to_solve))
-    print(over, len(len_to_solve))
-    print(abs(over-len(len_to_solve))/len(len_to_solve))
-    print("--- %s seconds ---" % (time.time() - start_time))
-#TODO start the loop with a continue untill to the word might to skip all previous
+        wordlist = wordlist2.copy()
+
+
+        start_time = time.time()
+        len_to_solve = []
+        for u in wordlist:
+            answer = u
+            guess = e
+            colors = ""
+            vals2 = [wordlist, guess]
+            count = 0
+            solved = False
+            while not solved:
+                count +=1
+                vals = checker(vals2[1], answer)
+                vals2 = solver_against_self(vals2[0], vals[0], vals[1])
+                #TODO need to look father at this code underneeth to see if it is benifical
+                if vals2[1] == answer:
+                    vals = checker(vals2[1], answer)
+                    solved = True
+                    #print("Guesses:",count+1, answer)
+                    len_to_solve.append(count+1)
+                    #if count+1 ==13:
+                    #    exit()
+                #if len(vals2[0]) == 1:
+                #    solved = True
+                #    vals = checker(vals2[1], answer)
+                #    print("len is 1:", count+1)
+            #print(e)
+        print("-----------------------")
+        print("guess", guess)
+        print(sum(len_to_solve)/len(len_to_solve))
+        #print(max(len_to_solve))
+        len_to_solve.sort(reverse=True)
+        print(len_to_solve)
+        over = 0
+        for i in len_to_solve:
+            if i > 6:
+                over +=1
+        #print(over, len(len_to_solve))
+        print(over, len(len_to_solve))
+        print(abs(over-len(len_to_solve))/len(len_to_solve))
+        print("--- %s seconds ---" % (time.time() - start_time))
+        file.write(guess+ "    "+ str(over) +"    "+ str((time.time() - start_time))+ "    "+ str(abs(over-len(len_to_solve))/len(len_to_solve)) + "    " +sum(len_to_solve)/len(len_to_solve) +"\n")
+        file.close()
+    #TODO start the loop with a continue untill to the word might to skip all previous
+    file.close()
+#theading_test(wordlist2, ["alert", "beget"])
+
+my_list = wordlist2
+
+# How many elements each
+# list should have
+n = 10
+
+# using list comprehension
+final = [my_list[i * n:(i + 1) * n] for i in range((len(my_list) + n - 1) // n)]
+#print(final)
+#import threading
+#for i in final:
+#    t1 = threading.Thread(target=theading_test, args=(wordlist2, i))
+
+#    t1.start()
+import multiprocessing
+from multiprocessing import Process
+print("Number of cpu : ", multiprocessing.cpu_count())
+from multiprocessing import Pool
+
+
+work = (["A", 5], ["B", 2], ["C", 1], ["D", 3])
+#theading_test(wordlist2, final[0])
+
+
+
+def work_log(work_data):
+    theading_test(wordlist2, work_data)
+
+def pool_handler():
+    p = Pool(12)
+    p.map(work_log, final)
+
+
+if __name__ == '__main__':
+    pool_handler()
